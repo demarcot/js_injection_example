@@ -1,8 +1,10 @@
+const { Injector } = require("./Injector");
+
 class OtherThingDao {
   #dbClient;
 
-  constructor (dbClient) {
-    this.#dbClient = dbClient;
+  async postConstruct () {
+    this.#dbClient = await Injector.getInjectable('otherThingDbClient');
   }
 
   async getOtherThings () {

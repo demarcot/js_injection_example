@@ -1,10 +1,12 @@
+const { Injector } = require("./Injector");
+
 class MainService {
   #thingDao;
   #otherThingDao;
 
-  constructor (thingDao, otherThingDao) {
-    this.#thingDao = thingDao;
-    this.#otherThingDao = otherThingDao;
+  async postConstruct () {
+    this.#thingDao = await Injector.getInjectable('thingDao');
+    this.#otherThingDao = await Injector.getInjectable('otherThingDao');
   }
 
   async arbitraryUseCase () {

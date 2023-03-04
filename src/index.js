@@ -1,9 +1,12 @@
-const { ApplicationEntities } = require("./ApplicationEntities")
+const { ApplicationEntities } = require("./ApplicationEntities");
+const { Injector } = require("./lib/Injector");
 
 
 async function run () {
   await ApplicationEntities.init();
-  await ApplicationEntities.mainSvc.arbitraryUseCase();
+  const mainSvc = await Injector.getInjectable('mainSvc');
+
+  await mainSvc.arbitraryUseCase();
 }
 
 run()

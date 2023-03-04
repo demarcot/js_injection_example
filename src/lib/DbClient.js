@@ -1,10 +1,18 @@
+const { Injector } = require("./Injector");
+
 class DbClient {
   table;
   connStr;
+  randNum;
 
   constructor (table, connStr) {
     this.table = table;
     this.connStr = connStr;
+  }
+
+  async postConstruct () {
+    await this.connect();
+    this.randNum = await Injector.getInjectable('randNum');
   }
 
   async connect () {
@@ -14,7 +22,7 @@ class DbClient {
 
   async getAll () {
     console.log(`Getting all items from table - ${this.table} - at ${this.connStr}`);
-    return [`${this.table}1`, `${this.table}2`];
+    return [`${this.table}${this.randNum}`, `${this.table}${this.randNum + 1}`];
   }
 }
 
