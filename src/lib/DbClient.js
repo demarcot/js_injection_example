@@ -1,9 +1,9 @@
 const { Injector } = require("./Injector");
 
 class DbClient {
-  table;
-  connStr;
-  randNum;
+  /** @type {String} */ table;
+  /** @type {String} */ connStr;
+  /** @type {Number} */randNum;
 
   constructor (table, connStr) {
     this.table = table;
@@ -12,7 +12,7 @@ class DbClient {
 
   async postConstruct () {
     await this.connect();
-    this.randNum = await Injector.getInjectable('randNum');
+    this.randNum = await Injector.getInjectable({ name: 'randNum' });
   }
 
   async connect () {

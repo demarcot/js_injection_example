@@ -2,48 +2,49 @@ const { DbClient } = require("./lib/DbClient");
 const { OtherThingDao } = require("./lib/OtherThingDao");
 const { ThingDao } = require("./lib/ThingDao");
 const { MainService } = require("./lib/MainService");
-const { Injector } = require("./lib/Injector");
+const { Injector, InjectorStrategy } = require("./lib/Injector");
 
 class ApplicationEntities {
-  static thingDbClient;
-  static otherThingDbClient;
-  static thingDao;
-  static otherThingDao;
-  static mainSvc;
-
   // NOTE(Tom): For tests, you could use a different init method or use a TestApplicationEntities module
    static async init () {
+    console.log('--- Initializing Application');
+
     // NOTE(Tom): This allows lookups by name for singleton or instantiated injectables
-    console.log('--- misc injectables');
+    console.log('- init misc');
     // This must be declared before it is ref'd since this is a dumb map
-    await Injector.addInjectable('randNum', () => { return Math.floor(Math.random() * 10) }, false);
+    await Injector.addInjectable({
+      name: 'randNum',
+      type: () => { return Math.floor(Math.random() * 10) },
+      strategy: InjectorStrategy.PrototypeStrategy
+    });
 
-    console.log('--- db injectables');
-    await Injector.addInjectable('thingDbClient', () => { return new DbClient('Thing', 'localhost:3131'); });
-    await Injector.addInjectable('otherThingDbClient', () => { return new DbClient('OtherThing', 'localhost:3232'); });
+    console.log('- init db clients');
+    await Injector.addInjectable({
+      name: 'thingDbClient',
+      type: () => { return new DbClient('Thing', 'localhost:3131'); }
+    });
+    await Injector.addInjectable({
+      name: 'otherThingDbClient',
+      type: () => { return new DbClient('OtherThing', 'localhost:3232'); }
+    });
 
-    console.log('--- dao injectables');
-    await Injector.addInjectable('thingDao', () => { return new ThingDao(); });
-    await Injector.addInjectable('otherThingDao', () => { return new OtherThingDao(); });
+    console.log('- init daos');
+    await Injector.addInjectable({
+      type: ThingDao
+    });
+     await Injector.addInjectable({
+       type: OtherThingDao
+     });
 
-    console.log('--- main svc injectable');
-    await Injector.addInjectable('mainSvc', () => { return new MainService() });
-  }
+    console.log('- init main svc');
+     await Injector.addInjectable({
+       type: MainService
+     });
 
-  static async firstDraftInit () {
-    // NOTE(Tom): First Draft: This version allows intellisense lookup of existing app entities
-    console.log('--- connecting to dbs');
-    ApplicationEntities.thingDbClient = new DbClient('Thing', 'localhost:3131');
-    await ApplicationEntities.thingDbClient.connect();
-    ApplicationEntities.otherThingDbClient = new DbClient('OtherThing', 'localhost:3232');
-    await ApplicationEntities.otherThingDbClient.connect();
 
-    console.log('--- creating daos');
-    ApplicationEntities.thingDao = new ThingDao(ApplicationEntities.thingDbClient);
-    ApplicationEntities.otherThingDao = new OtherThingDao(ApplicationEntities.otherThingDbClient);
-
-    console.log('--- creating main service');
-    ApplicationEntities.mainSvc = new MainService(ApplicationEntities.thingDao, ApplicationEntities.otherThingDao);
+    console.log('\n--- Available Injectables:');
+    console.log(Object.keys(Injector.injectorMap));
+    console.log('\n');
   }
 }
 
