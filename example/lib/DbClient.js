@@ -1,4 +1,4 @@
-const { Injector } = require("./Injector");
+const { Injector } = require("../../");
 
 class DbClient {
   /** @type {String} */ table;

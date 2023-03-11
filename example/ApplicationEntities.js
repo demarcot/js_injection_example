@@ -2,7 +2,7 @@ const { DbClient } = require("./lib/DbClient");
 const { OtherThingDao } = require("./lib/OtherThingDao");
 const { ThingDao } = require("./lib/ThingDao");
 const { MainService } = require("./lib/MainService");
-const { Injector, InjectorStrategy } = require("./lib/Injector");
+const { Injector, InjectorStrategy } = require("../");
 
 class ApplicationEntities {
   // NOTE(Tom): For tests, you could use a different init method or use a TestApplicationEntities module

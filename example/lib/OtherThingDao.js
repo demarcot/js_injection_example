@@ -1,5 +1,5 @@
 const { DbClient } = require("./DbClient");
-const { Injector } = require("./Injector");
+const { Injector } = require("../../");
 
 class OtherThingDao {
   /** @type {DbClient} */ #dbClient;

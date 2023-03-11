@@ -1,4 +1,4 @@
-const { Injector } = require("./Injector");
+const { Injector } = require("../../");
 const { OtherThingDao } = require("./OtherThingDao");
 const { ThingDao } = require("./ThingDao");
 

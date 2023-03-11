@@ -1,5 +1,5 @@
 const { ApplicationEntities } = require("./ApplicationEntities");
-const { Injector } = require("./lib/Injector");
+const { Injector } = require('../');
 const { MainService } = require("./lib/MainService");
 
 
