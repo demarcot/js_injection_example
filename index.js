@@ -1,4 +1,7 @@
-const { Injector, InjectorStrategy, InjectableIdentifier, InjectableOptions } = require('./src/lib/Injector');
+const { Injector } = require('./src/lib/Injector');
+const { InjectorStrategy } = require('./src/lib/InjectorStrategy');
+const { InjectableIdentifier } = require('./src/lib/InjectableIdentifier');
+const { InjectableOptions } = require('./src/lib/InjectableOptions');
 
 module.exports = {
   Injector,
